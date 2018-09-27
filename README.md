@@ -28,3 +28,5 @@ Run following command:
 	- laravel-echo-server start
 
 Open browser in Chrome and another tab using incognito or other browser type (Safari, Firefox). Create an account and test your app
+
+[Demo](https://agile-sea-38553.herokuapp.com/): Now I haven't figure out any way to run laravel-echo-server on Heroku, but if your have your own VPS it's very easy
