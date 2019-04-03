@@ -13,6 +13,9 @@ Run following command on root folder:
     - npm install
     - npm update
 	- cp .env.example .env
+	- laravel-echo-server init (then just select yes, but don't select HTTPS)
+
+Open `resources/js/bootstrap.js` scroll to bottom and choose which host match to yours (production or development, probably you should choose `development`)
 
 Then open your `.env` file and change database connection info as installed on your PC
 
