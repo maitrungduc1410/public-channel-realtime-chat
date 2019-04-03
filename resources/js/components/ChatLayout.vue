@@ -49,6 +49,7 @@
                 let message = data.message
                 message.user = data.user
                 this.list_messages.push(message)
+		this.scrollToBottom()
             })
         },
         mounted () {
@@ -64,18 +65,28 @@
                             console.log(error)
                         })
                 },
+		scrollToBottom () {
+			const container = document.querySelector('.messages')
+        if (container) {
+          $(container).animate(
+            { scrollTop: container.scrollHeight},
+            { duration: 'medium', easing: 'swing' }
+          )
+        }
+
+		},
                 sendMessage() {
                     axios.post('/messages', {
                             message: this.message
                         })
                         .then(response => {
-                            console.log('success')
                             this.list_messages.push({
                                 message: this.message,
                                 created_at: new Date().toJSON().replace(/T|Z/gi, ' '),
                                 user: this.$root.currentUserLogin
                             })
                             this.message = ''
+			    this.scrollToBottom()
                         })
                         .catch(error => {
                             console.log(error)
