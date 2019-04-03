@@ -31,6 +31,9 @@ const app = new Vue({
             .then(response => {
                 this.currentUserLogin = response.data
             })
+            .catch(error => {
+              
+            })
         }
     }
 })

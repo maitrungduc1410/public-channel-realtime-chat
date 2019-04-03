@@ -60756,7 +60756,7 @@ var app = new Vue({
 
       axios.get('/getUserLogin').then(function (response) {
         _this.currentUserLogin = response.data;
-      });
+      })["catch"](function (error) {});
     }
   }
 });
