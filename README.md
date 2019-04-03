@@ -8,8 +8,9 @@
 - Clone this project
 
 Run following command on root folder:
-
+  - composer install
 	- npm install
+  - npm update
 	- cp .env.example .env
 
 Then open your `.env` file and change database connection info as installed on your PC

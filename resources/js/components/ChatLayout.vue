@@ -1,5 +1,16 @@
 <template>
 	<div>
+        <div class="btn-logout">
+            <a class="btn btn-danger" href="/logout"
+                onclick="event.preventDefault();
+                                document.getElementById('logout-form').submit();">
+                Logout
+            </a>
+
+            <form id="logout-form" action="/logout" method="POST" style="display: none;">
+                <input type="hidden" name="_token" :value="csrfToken">
+            </form>
+        </div>
         <div class="chat">
             <div class="chat-title">
                 <h1>Chatroom</h1>
@@ -27,7 +38,8 @@
         data() {
             return {
                 message: '',
-                list_messages: []
+                list_messages: [],
+                csrfToken: ''
             }
         },
         created() {
@@ -38,6 +50,9 @@
                 message.user = data.user
                 this.list_messages.push(message)
             })
+        },
+        mounted () {
+            this.csrfToken = document.head.querySelector('meta[name="csrf-token"]').content
         },
         methods: {
             loadMessage() {
@@ -208,5 +223,12 @@ Message Box
             background: #1D7745;
         }
     }
+}
+
+.btn-logout {
+    position: absolute;
+    top: 20px;
+    right: 50px;
+    z-index: 3;
 }
 </style>

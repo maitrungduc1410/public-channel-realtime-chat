@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Chat App</title>
+	<title>Public Chat App</title>
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
 	<style type="text/css">
@@ -24,7 +24,8 @@
 		  line-height: 1.3;
 		  overflow: hidden;
 		}
-	</style>
+  </style>
+  <link rel="stylesheet" href="/css/app.css">
 </head>
 <body>
 	<div id="app">
