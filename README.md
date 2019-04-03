@@ -8,6 +8,7 @@
 - Clone this project
 
 Run following command on root folder:
+
   - composer install
 	- npm install
   - npm update
