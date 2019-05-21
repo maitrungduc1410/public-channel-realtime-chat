@@ -13,19 +13,19 @@
         "axios": "^0.18",
         "bootstrap": "^4.3.1",
         "cross-env": "^5.1",
-        "jquery": "^3.2",
+        "jquery": "^3.4.1",
         "laravel-mix": "^4.0.15",
         "lodash": "^4.17.5",
-        "popper.js": "^1.14.7",
+        "popper.js": "^1.15.0",
         "resolve-url-loader": "2.3.1",
-        "sass": "^1.17.4",
+        "sass": "^1.20.1",
         "sass-loader": "7.*",
         "vue": "^2.6.10",
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
-        "laravel-echo": "^1.4.0",
-        "laravel-echo-server": "^1.4.2",
-        "socket.io-client": "^2.1.1"
+        "laravel-echo": "^1.5.3",
+        "laravel-echo-server": "^1.5.5",
+        "socket.io-client": "^2.2.0"
     }
 }
