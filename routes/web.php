@@ -26,7 +26,8 @@ Route::get('/getUserLogin', function() {
 })->middleware('auth');
 
 Route::get('/messages', function() {
-	return App\Message::with('user')->get();
+  $messages = App\Message::with('user')->orderBy('id', 'desc')->limit(300)->get()->reverse()->values();
+	return $messages;
 })->middleware('auth');
 
 Route::post('/messages', function() {

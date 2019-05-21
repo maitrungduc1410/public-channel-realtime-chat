@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div class="message-box">
-                <input type="text" v-model="message" @keyup.enter="sendMessage" class="message-input" placeholder="Type message..."/>
+                <input maxlength="100" type="text" v-model="message" @keyup.enter="sendMessage" class="message-input" placeholder="Type message..."/>
                 <button type="button" class="message-submit" @click="sendMessage">Send</button>
             </div>
         </div>
@@ -49,49 +49,52 @@
                 let message = data.message
                 message.user = data.user
                 this.list_messages.push(message)
-		this.scrollToBottom()
+		        this.scrollToBottom()
             })
         },
         mounted () {
             this.csrfToken = document.head.querySelector('meta[name="csrf-token"]').content
+            setTimeout(() => {
+                this.scrollToBottom()
+            }, 500)
+            
         },
         methods: {
             loadMessage() {
-                    axios.get('/messages')
-                        .then(response => {
-                            this.list_messages = response.data
-                        })
-                        .catch(error => {
-                            console.log(error)
-                        })
-                },
-		scrollToBottom () {
-			const container = document.querySelector('.messages')
-        if (container) {
-          $(container).animate(
-            { scrollTop: container.scrollHeight},
-            { duration: 'medium', easing: 'swing' }
-          )
-        }
-
-		},
-                sendMessage() {
-                    axios.post('/messages', {
-                            message: this.message
-                        })
-                        .then(response => {
-                            this.list_messages.push({
-                                message: this.message,
-                                created_at: new Date().toJSON().replace(/T|Z/gi, ' '),
-                                user: this.$root.currentUserLogin
-                            })
-                            this.message = ''
-			    this.scrollToBottom()
-                        })
-                        .catch(error => {
-                            console.log(error)
-                        })
+                axios.get('/messages')
+                    .then(response => {
+                        this.list_messages = response.data
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
+            },
+            scrollToBottom () {
+                const container = document.querySelector('.messages')
+                if (container) {
+                    $(container).animate(
+                        { scrollTop: container.scrollHeight},
+                        { duration: 'medium', easing: 'swing' }
+                    )
                 }
+            },
+            sendMessage() {
+                axios.post('/messages', {
+                    message: this.message
+                })
+                .then(response => {
+                    this.list_messages.push({
+                        message: this.message,
+                        created_at: new Date().toJSON().replace(/T|Z/gi, ' '),
+                        user: this.$root.currentUserLogin
+                    })
+                    this.message = ''
+                    this.scrollToBottom()
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+            }
         }
     } 
 </script>
@@ -102,9 +105,6 @@
     overflow-y: scroll;
     padding: 0 20px;
 }
-/*--------------------
-Body
---------------------*/
 
 .bg {
 	position: absolute;
@@ -207,7 +207,7 @@ Message Box
         height: 17px;
         margin: 0;
         padding-right: 20px;
-        width: 265px;
+        width: 90%;
     }
 
     textarea:focus:-webkit-placeholder{
