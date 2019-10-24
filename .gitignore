@@ -13,3 +13,7 @@ yarn-error.log
 .env
 .phpunit.result.cache
 laravel-echo-server.*
+.docker/data/db/*
+!.docker/data/db/.gitkeep
+.docker/data/redis/*
+!.docker/data/redis/.gitkeep
