@@ -1,0 +1,85 @@
+version: '3'
+services:
+
+  #PHP Service
+  app:
+    image: maitrungduc1410/laravel-stack # change this to your_app_image_name
+    restart: unless-stopped
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+      - .docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - app-network
+
+  #Nginx Service
+  webserver:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "4000:80"
+    volumes:
+      - ./:/var/www/html
+      - .docker/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - app-network
+    healthcheck:
+      test: wget --quiet --tries=1 --spider https://public-chat.jamesisme.com || exit 1z
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  #MySQL Service
+  db:
+    image: mysql:5.7.22
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: laraveluser
+      MYSQL_PASSWORD: laraveluserpass
+      MYSQL_ROOT_PASSWORD: rootpass
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - .docker/data/db:/var/lib/mysql/
+      - .docker/mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - app-network
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      
+  laravel_echo_server:
+    image: maitrungduc1410/laravel-echo # change this to your_echo_image_name
+    volumes:
+      - .env:/app/.env
+    restart: unless-stopped
+    networks:
+      - app-network
+    healthcheck:
+      test: wget --quiet --tries=1 --spider http://localhost:6001 || exit 1z
+      interval: 30s
+      timeout: 10s
+      retries: 5
+  redis:
+    image: redis:5-alpine
+    volumes:
+      - .docker/data/redis:/data
+    restart: unless-stopped
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "redis-cli","ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
