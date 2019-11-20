@@ -27,7 +27,7 @@ Run following command:
 	- php artisan migrate
 	- php artisan serve
 	- npm run watch (open in another terminal tab)
-	- laravel-echo-server start
+	- laravel-echo-server start (open in another terminal tab)
 
 Open browser in Chrome and another tab using incognito or other browser type (Safari, Firefox). Create an account and test your app.
 
