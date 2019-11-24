@@ -13,7 +13,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        if(config('app.debug') != true) { // fix Mix content Error when go to HTTPS
+            \URL::forceScheme('https');
+        }
     }
 
     /**

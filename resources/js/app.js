@@ -32,8 +32,8 @@ const app = new Vue({
     data: {
         currentUserLogin: {},
         echoCredentials: {
-            appId: "b18eec84e0bb4416",
-			key: "4e315cabbe99483173f64e7fd8d8d05f"
+            appId: "b18eec84e0bb4416", //  appId in laravel-echo-server.json
+			key: "4e315cabbe99483173f64e7fd8d8d05f" // key in laravel-echo-server.json
         }
     },
     created () {
