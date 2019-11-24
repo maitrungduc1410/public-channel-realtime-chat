@@ -3,7 +3,10 @@ services:
 
   #PHP Service
   app:
-    image: maitrungduc1410/laravel-stack # change this to your_app_image_name
+    # image: maitrungduc1410/laravel-stack # change this to your_app_image_name
+    build:
+      context: ./
+      dockerfile: Dockerfile
     restart: unless-stopped
     environment:
       SERVICE_NAME: app
@@ -14,13 +17,17 @@ services:
       - .docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
       - app-network
+    depends_on:
+      - db
+      - redis
+      - laravel_echo_server
 
   #Nginx Service
   webserver:
     image: nginx:alpine
     restart: unless-stopped
     ports:
-      - "4000:80"
+      - "8000:80"
     volumes:
       - ./:/var/www/html
       - .docker/nginx/conf.d/:/etc/nginx/conf.d/
@@ -55,7 +62,10 @@ services:
       retries: 5
       
   laravel_echo_server:
-    image: maitrungduc1410/laravel-echo # change this to your_echo_image_name
+    # image: maitrungduc1410/laravel-echo # change this to your_echo_image_name
+    build:
+      context: .docker/laravel_echo/
+      dockerfile: Dockerfile
     volumes:
       - .env:/app/.env
     restart: unless-stopped

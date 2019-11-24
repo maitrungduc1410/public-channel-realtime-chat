@@ -10,3 +10,8 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+
+.docker/data/db/*
+!.docker/data/db/.gitkeep
+.docker/data/redis/*
+!.docker/data/redis/.gitkeep

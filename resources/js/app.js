@@ -30,9 +30,13 @@ Vue.component('chat-layout', require('./components/ChatLayout.vue').default)
 const app = new Vue({
     el: '#app',
     data: {
-        currentUserLogin: {}
+        currentUserLogin: {},
+        echoCredentials: {
+            appId: "b18eec84e0bb4416",
+			key: "4e315cabbe99483173f64e7fd8d8d05f"
+        }
     },
-    created() {
+    created () {
         this.getCurrentUserLogin()
     },
     methods: {

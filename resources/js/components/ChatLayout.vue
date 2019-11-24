@@ -1,5 +1,10 @@
 <template>
 	<div>
+        <div class="users-online">
+            <button type="button" class="btn btn-primary">
+                Users online: <span class="badge badge-light">{{ usersOnline }}</span>
+            </button>
+        </div>
         <div class="btn-logout">
             <a class="btn btn-danger" href="/logout"
                 onclick="event.preventDefault();
@@ -39,7 +44,8 @@
             return {
                 message: '',
                 list_messages: [],
-                csrfToken: ''
+                csrfToken: '',
+                usersOnline: 0
             }
         },
         created() {
@@ -57,6 +63,10 @@
             setTimeout(() => {
                 this.scrollToBottom()
             }, 500)
+
+            setInterval(() => {
+                this.getUsersOnline()
+            }, 3000)
             
         },
         methods: {
@@ -94,6 +104,13 @@
                 .catch(error => {
                     console.log(error)
                 })
+            },
+            getUsersOnline() {
+                axios.get(`${window.location.protocol}//${window.location.hostname}:6001/apps/${this.$root.echoCredentials.appId}/channels/laravel_database_chatroom?auth_key=${this.$root.echoCredentials.key}`)
+                .then(response => {
+                    this.usersOnline = response.data.subscription_count
+                })
+                .catch(e => console.log(e))
             }
         }
     } 
@@ -229,6 +246,12 @@ Message Box
     position: absolute;
     top: 20px;
     right: 50px;
+    z-index: 3;
+}
+.users-online {
+    position: absolute;
+    top: 20px;
+    left: 50px;
     z-index: 3;
 }
 </style>

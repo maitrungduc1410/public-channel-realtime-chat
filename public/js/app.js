@@ -1979,6 +1979,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -1988,7 +1993,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       message: '',
       list_messages: [],
-      csrfToken: ''
+      csrfToken: '',
+      usersOnline: 0
     };
   },
   created: function created() {
@@ -2011,6 +2017,9 @@ __webpack_require__.r(__webpack_exports__);
     setTimeout(function () {
       _this2.scrollToBottom();
     }, 500);
+    setInterval(function () {
+      _this2.getUsersOnline();
+    }, 3000);
   },
   methods: {
     loadMessage: function loadMessage() {
@@ -2051,6 +2060,15 @@ __webpack_require__.r(__webpack_exports__);
         _this4.scrollToBottom();
       })["catch"](function (error) {
         console.log(error);
+      });
+    },
+    getUsersOnline: function getUsersOnline() {
+      var _this5 = this;
+
+      axios.get("".concat(window.location.protocol, "//").concat(window.location.hostname, ":6001/apps/").concat(this.$root.echoCredentials.appId, "/channels/laravel_database_chatroom?auth_key=").concat(this.$root.echoCredentials.key)).then(function (response) {
+        _this5.usersOnline = response.data.subscription_count;
+      })["catch"](function (e) {
+        return console.log(e);
       });
     }
   }
@@ -8836,7 +8854,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".messages[data-v-927db766] {\n  height: 80%;\n  overflow-y: scroll;\n  padding: 0 20px;\n}\n.bg[data-v-927db766] {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n  z-index: 1;\n  background: url(\"https://images.unsplash.com/photo-1451186859696-371d9477be93?crop=entropy&fit=crop&fm=jpg&h=975&ixjsv=2.1.0&ixlib=rb-0.3.5&q=80&w=1925\") no-repeat 0 0;\n  -webkit-filter: blur(80px);\n          filter: blur(80px);\n  -webkit-transform: scale(1.2);\n          transform: scale(1.2);\n}\n\n/*--------------------\nChat\n--------------------*/\n.chat[data-v-927db766] {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  -webkit-transform: translate(-50%, -50%);\n          transform: translate(-50%, -50%);\n  width: 500px;\n  height: 80vh;\n  max-height: 700px;\n  z-index: 2;\n  overflow: hidden;\n  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);\n  background: rgba(0, 0, 0, 0.5);\n  border-radius: 20px;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-pack: justify;\n          justify-content: space-between;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n          flex-direction: column;\n}\n\n/*--------------------\nChat Title\n--------------------*/\n.chat-title[data-v-927db766] {\n  -webkit-box-flex: 0;\n          flex: 0 1 45px;\n  position: relative;\n  z-index: 2;\n  background: rgba(0, 0, 0, 0.2);\n  color: #fff;\n  text-transform: uppercase;\n  text-align: left;\n  padding: 10px 10px 10px 50px;\n}\n.chat-title h1[data-v-927db766], .chat-title h2[data-v-927db766] {\n  font-weight: normal;\n  font-size: 16px;\n  margin: 0;\n  padding: 0;\n}\n.chat-title h2[data-v-927db766] {\n  color: rgba(255, 255, 255, 0.5);\n  font-size: 8px;\n  letter-spacing: 1px;\n}\n.chat-title .avatar[data-v-927db766] {\n  position: absolute;\n  z-index: 1;\n  top: 8px;\n  left: 9px;\n  border-radius: 30px;\n  width: 30px;\n  height: 30px;\n  overflow: hidden;\n  margin: 0;\n  padding: 0;\n  border: 2px solid rgba(255, 255, 255, 0.24);\n}\n.chat-title .avatar img[data-v-927db766] {\n  width: 100%;\n  height: auto;\n}\n\n/*--------------------\nMessage Box\n--------------------*/\n.message-box[data-v-927db766] {\n  -webkit-box-flex: 0;\n          flex: 0 1 40px;\n  width: 100%;\n  background: rgba(0, 0, 0, 0.3);\n  padding: 10px;\n  position: relative;\n}\n.message-box .message-input[data-v-927db766] {\n  background: none;\n  border: none;\n  outline: none !important;\n  resize: none;\n  color: rgba(255, 255, 255, 0.7);\n  font-size: 11px;\n  height: 17px;\n  margin: 0;\n  padding-right: 20px;\n  width: 90%;\n}\n.message-box textarea[data-v-927db766]:focus:-webkit-placeholder {\n  color: transparent;\n}\n.message-box .message-submit[data-v-927db766] {\n  position: absolute;\n  z-index: 1;\n  top: 9px;\n  right: 10px;\n  color: #fff;\n  border: none;\n  background: #248A52;\n  font-size: 10px;\n  text-transform: uppercase;\n  line-height: 1;\n  padding: 6px 10px;\n  border-radius: 10px;\n  outline: none !important;\n  -webkit-transition: background 0.2s ease;\n  transition: background 0.2s ease;\n}\n.message-box .message-submit[data-v-927db766]:hover {\n  background: #1D7745;\n}\n.btn-logout[data-v-927db766] {\n  position: absolute;\n  top: 20px;\n  right: 50px;\n  z-index: 3;\n}", ""]);
+exports.push([module.i, ".messages[data-v-927db766] {\n  height: 80%;\n  overflow-y: scroll;\n  padding: 0 20px;\n}\n.bg[data-v-927db766] {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n  z-index: 1;\n  background: url(\"https://images.unsplash.com/photo-1451186859696-371d9477be93?crop=entropy&fit=crop&fm=jpg&h=975&ixjsv=2.1.0&ixlib=rb-0.3.5&q=80&w=1925\") no-repeat 0 0;\n  -webkit-filter: blur(80px);\n          filter: blur(80px);\n  -webkit-transform: scale(1.2);\n          transform: scale(1.2);\n}\n\n/*--------------------\nChat\n--------------------*/\n.chat[data-v-927db766] {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  -webkit-transform: translate(-50%, -50%);\n          transform: translate(-50%, -50%);\n  width: 500px;\n  height: 80vh;\n  max-height: 700px;\n  z-index: 2;\n  overflow: hidden;\n  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);\n  background: rgba(0, 0, 0, 0.5);\n  border-radius: 20px;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-pack: justify;\n          justify-content: space-between;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n          flex-direction: column;\n}\n\n/*--------------------\nChat Title\n--------------------*/\n.chat-title[data-v-927db766] {\n  -webkit-box-flex: 0;\n          flex: 0 1 45px;\n  position: relative;\n  z-index: 2;\n  background: rgba(0, 0, 0, 0.2);\n  color: #fff;\n  text-transform: uppercase;\n  text-align: left;\n  padding: 10px 10px 10px 50px;\n}\n.chat-title h1[data-v-927db766], .chat-title h2[data-v-927db766] {\n  font-weight: normal;\n  font-size: 16px;\n  margin: 0;\n  padding: 0;\n}\n.chat-title h2[data-v-927db766] {\n  color: rgba(255, 255, 255, 0.5);\n  font-size: 8px;\n  letter-spacing: 1px;\n}\n.chat-title .avatar[data-v-927db766] {\n  position: absolute;\n  z-index: 1;\n  top: 8px;\n  left: 9px;\n  border-radius: 30px;\n  width: 30px;\n  height: 30px;\n  overflow: hidden;\n  margin: 0;\n  padding: 0;\n  border: 2px solid rgba(255, 255, 255, 0.24);\n}\n.chat-title .avatar img[data-v-927db766] {\n  width: 100%;\n  height: auto;\n}\n\n/*--------------------\nMessage Box\n--------------------*/\n.message-box[data-v-927db766] {\n  -webkit-box-flex: 0;\n          flex: 0 1 40px;\n  width: 100%;\n  background: rgba(0, 0, 0, 0.3);\n  padding: 10px;\n  position: relative;\n}\n.message-box .message-input[data-v-927db766] {\n  background: none;\n  border: none;\n  outline: none !important;\n  resize: none;\n  color: rgba(255, 255, 255, 0.7);\n  font-size: 11px;\n  height: 17px;\n  margin: 0;\n  padding-right: 20px;\n  width: 90%;\n}\n.message-box textarea[data-v-927db766]:focus:-webkit-placeholder {\n  color: transparent;\n}\n.message-box .message-submit[data-v-927db766] {\n  position: absolute;\n  z-index: 1;\n  top: 9px;\n  right: 10px;\n  color: #fff;\n  border: none;\n  background: #248A52;\n  font-size: 10px;\n  text-transform: uppercase;\n  line-height: 1;\n  padding: 6px 10px;\n  border-radius: 10px;\n  outline: none !important;\n  -webkit-transition: background 0.2s ease;\n  transition: background 0.2s ease;\n}\n.message-box .message-submit[data-v-927db766]:hover {\n  background: #1D7745;\n}\n.btn-logout[data-v-927db766] {\n  position: absolute;\n  top: 20px;\n  right: 50px;\n  z-index: 3;\n}\n.users-online[data-v-927db766] {\n  position: absolute;\n  top: 20px;\n  left: 50px;\n  z-index: 3;\n}", ""]);
 
 // exports
 
@@ -49690,6 +49708,19 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
+    _c("div", { staticClass: "users-online" }, [
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", attrs: { type: "button" } },
+        [
+          _vm._v("\n                Users online: "),
+          _c("span", { staticClass: "badge badge-light" }, [
+            _vm._v(_vm._s(_vm.usersOnline))
+          ])
+        ]
+      )
+    ]),
+    _vm._v(" "),
     _c("div", { staticClass: "btn-logout" }, [
       _c(
         "a",
@@ -62051,7 +62082,11 @@ Vue.component('chat-layout', __webpack_require__(/*! ./components/ChatLayout.vue
 var app = new Vue({
   el: '#app',
   data: {
-    currentUserLogin: {}
+    currentUserLogin: {},
+    echoCredentials: {
+      appId: "b18eec84e0bb4416",
+      key: "4e315cabbe99483173f64e7fd8d8d05f"
+    }
   },
   created: function created() {
     this.getCurrentUserLogin();

@@ -1,8 +1,8 @@
 # Realtime chat app using Laravel, VueJS, Redis, Laravel Echo Server
 
 # Install Instruction
-
-
+## Prerequisite
+Please make sure you have `redis` on your PC first. Run `redis-cli` in command line to check whether you have `redis`
 
 ## Installation:
 - Clone this project
@@ -39,10 +39,13 @@ You can try real demo here: [Demo](https://public-chat.jamesisme.com/)
 ## Prerequisite
 Install `docker` and `docker-compose`
 
-## Buid images
+## Build images
 First:
 - Change LARAVEL_ECHO_SERVER_REDIS_HOST in `.env` from `localhost` to `redis`
-- And change REDIS_HOST in `.env` to `redis`
+- Change REDIS_HOST in `.env` to `redis`
+- Change `DB_HOST` in `.env` to `db`
+- And change other db info (user pass, db name,...) in `.env` to match service `db` in `docker-compose.yml`
+- Go to `resources/js/bootstrap.js` change Echo host to port `8000` instead of `6001` (Eg: `${window.location.protocol}//${window.location.hostname}:6001`)
 
 Then we need to build our Laravel application:
 ```
@@ -57,7 +60,7 @@ Then edit the `docker-compose.yml` file:
 - Change image's name in service `app` to `your_app_image_name` we set above
 - Change image's name in service `laravel_echo_server` to `your_echo_image_name` we set above
 
-Now, start your app: `docker-compose up` (you can use `-d` option to run the app in background)
+Now, start your app: `docker-compose up -d --build`, then wait for docker to build images and start up
 
-Then access `localhost` to see your application alive.
+Then access `localhost:8000` to see your application alive.
 
