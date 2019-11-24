@@ -45,7 +45,7 @@ First:
 - Change REDIS_HOST in `.env` to `redis`
 - Change `DB_HOST` in `.env` to `db`
 - And change other db info (user pass, db name,...) in `.env` to match service `db` in `docker-compose.yml`
-- Go to `resources/js/bootstrap.js` change Echo host to port `8000` instead of `6001` (Eg: `${window.location.protocol}//${window.location.hostname}:6001`)
+- Go to `resources/js/bootstrap.js` change Echo host to port `8000` instead of `6001` (Eg: `${window.location.protocol}//${window.location.hostname}:8000`)
 
 Then we need to build our Laravel application:
 ```
