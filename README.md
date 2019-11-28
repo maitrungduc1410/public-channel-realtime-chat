@@ -36,6 +36,11 @@ Then you're ready to go
 # Demo
 You can try real demo here: [Demo](https://public-chat.jamesisme.com/)
 
+# Note
+This demo uses public channel in Laravel, which is easy to setup, but with public channel anyone can listen to event when new message saved and in real project you probably need to authenticate or authorize user before they can listen to message's event. 
+
+To do that, we'll need `Private` and `Presence` channel. Check out my blog about it here: https://github.com/maitrungduc1410/realtime-chat
+
 # Running with Docker
 ## Prerequisite
 Install `docker` and `docker-compose`
