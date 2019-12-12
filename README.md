@@ -27,6 +27,7 @@ Run following command:
 	- php artisan migrate
 	- php artisan serve
 	- npm run watch (open in another terminal tab)
+	- php artisan queue:work (open in another terminal tab)
 	- laravel-echo-server start (open in another terminal tab)
 
 Open browser in Chrome and another tab using incognito or other browser type (Safari, Firefox). Create an account and test your app.
@@ -34,6 +35,11 @@ Open browser in Chrome and another tab using incognito or other browser type (Sa
 Then you're ready to go
 # Demo
 You can try real demo here: [Demo](https://public-chat.jamesisme.com/)
+
+# Note
+This demo uses public channel in Laravel, which is easy to setup, but with public channel anyone can listen to event when new message saved and in real project you probably need to authenticate or authorize user before they can listen to message's event. 
+
+To do that, we'll need `Private` and `Presence` channel. Check out my blog about it here: https://github.com/maitrungduc1410/realtime-chat
 
 # Running with Docker
 ## Prerequisite
@@ -46,6 +52,7 @@ First:
 - Change `DB_HOST` in `.env` to `db`
 - And change other db info (user pass, db name,...) in `.env` to match service `db` in `docker-compose.yml`
 - Go to `resources/js/bootstrap.js` change Echo host to port `8000` instead of `6001` (Eg: `${window.location.protocol}//${window.location.hostname}:8000`)
+- Go to `resources/js/components/ChatLayout.vue`, in method `getUsersOnline` change URL to port `8000` (not `6001`)
 
 Then we need to build our Laravel application:
 ```
