@@ -31,6 +31,14 @@
             </div>
         </div>
         <div class="bg"></div>
+        <div class="footer">
+            <div>
+                This demo uses Public channel, in production you probably need Private or Presence Channel to make your chat app secure. 
+            </div>
+            <div>
+                Check out my demo <a href="https://realtime-chat.jamesisme.com/" target="_blank">here</a>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -253,5 +261,14 @@ Message Box
     top: 20px;
     left: 50px;
     z-index: 3;
+}
+
+.footer {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    color: white;
+    text-align: center;
+    z-index: 1;
 }
 </style>
