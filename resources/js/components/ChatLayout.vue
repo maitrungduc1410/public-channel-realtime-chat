@@ -114,7 +114,7 @@
                 })
             },
             getUsersOnline() {
-                axios.get(`${window.location.protocol}//${window.location.hostname}/apps/${this.$root.echoCredentials.appId}/channels/laravel_database_chatroom?auth_key=${this.$root.echoCredentials.key}`)
+                axios.get(`${process.env.MIX_LARAVEL_ECHO_SERVER_HOST}/apps/${this.$root.echoCredentials.appId}/channels/laravel_database_chatroom?auth_key=${this.$root.echoCredentials.key}`)
                 .then(response => {
                     this.usersOnline = response.data.subscription_count
                 })

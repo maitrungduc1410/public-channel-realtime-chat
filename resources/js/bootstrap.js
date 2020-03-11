@@ -35,6 +35,5 @@ window.io = require('socket.io-client');
 
 window.Echo = new Echo({
     broadcaster: 'socket.io',
-     host: `${window.location.protocol}//${window.location.hostname}/` // on production
-    //host: `${window.location.protocol}//${window.location.hostname}:6001` // for development
+    host: process.env.MIX_LARAVEL_ECHO_SERVER_HOST
 });
