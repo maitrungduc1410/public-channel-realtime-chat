@@ -323,6 +323,8 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       }
     },
     sendMessage: function sendMessage() {
+      var _this4 = this;
+
       var response;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.async(function sendMessage$(_context3) {
         while (1) {
@@ -338,7 +340,13 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
               response = _context3.sent;
               this.list_messages.push(response.data.message);
               this.message = '';
-              this.scrollToBottom();
+              this.$nextTick(function () {
+                _this4.scrollToBottom();
+
+                $(function () {
+                  $('[data-toggle="tooltip"]').tooltip();
+                });
+              });
               _context3.next = 12;
               break;
 

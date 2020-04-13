@@ -111,7 +111,7 @@
                             this.scrollToBottom()
                         }
 
-                        $(function () {
+                        $(() => {
                             $('[data-toggle="tooltip"]').tooltip()
                         })
                     })
@@ -139,7 +139,13 @@
 
                     this.list_messages.push(response.data.message)
                     this.message = ''
-                    this.scrollToBottom()
+
+                    this.$nextTick(() => {
+                        this.scrollToBottom()
+                        $(() => {
+                            $('[data-toggle="tooltip"]').tooltip()
+                        })
+                    })
                 } catch (error) {
                     console.log(error)
                 }
