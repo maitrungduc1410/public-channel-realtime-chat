@@ -15,3 +15,11 @@ yarn-error.log
 !.docker/data/db/.gitkeep
 .docker/data/redis/*
 !.docker/data/redis/.gitkeep
+
+public/js/app.js
+public/js/manifest.js
+public/js/vendor.js
+public/css/app.css
+public/mix-manifest.json
+!public/js/.gitkeep
+!publis/css/.gitkeep
