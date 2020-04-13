@@ -22,6 +22,14 @@
             </div>
             <div class="messages">
                 <div class="messages-content">
+                    <div class="text-center py-2" v-if="isLoading">
+                        <svg
+                            version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                            <path fill="#FF6700" d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z" transform="rotate(18.3216 25 25)">
+                                <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform>
+                            </path>
+                        </svg>
+                    </div>
                     <ChatItem v-for="(message, index) in list_messages" :key="index" :message="message"></ChatItem>
                 </div>
             </div>
@@ -52,12 +60,16 @@
             return {
                 message: '',
                 list_messages: [],
+                currentPage: 1,
+                newMessageArrived: 0, // number of new messages we just got (use for scroll)
+                lastPage: 1,
                 csrfToken: '',
-                usersOnline: 0
+                usersOnline: 0,
+                isLoading: false,
             }
         },
         created() {
-            this.loadMessage()
+            this.loadMessage(this.currentPage)
             Echo.channel('laravel_database_chatroom')
             .listen('MessagePosted', (data) => {
                 let message = data.message
@@ -68,24 +80,43 @@
         },
         mounted () {
             this.csrfToken = document.head.querySelector('meta[name="csrf-token"]').content
-            setTimeout(() => {
-                this.scrollToBottom()
-            }, 500)
 
             setInterval(() => {
                 this.getUsersOnline()
             }, 3000)
             
+            $('.messages').on('scroll', async () => {
+                var scroll = $('.messages').scrollTop();
+                if (scroll < 1 && this.currentPage < this.lastPage) {
+                    await this.loadMessage(this.currentPage + 1)
+                    const lastFirstMessage = $(`.message:nth-child(${this.newMessageArrived - 1})`)
+                    $('.messages').scrollTop(lastFirstMessage.offset().top)
+                }
+            })
         },
         methods: {
-            loadMessage() {
-                axios.get('/messages')
-                    .then(response => {
-                        this.list_messages = response.data
+            async loadMessage(page) {
+                try {
+                    this.isLoading = true
+                    const response = await axios.get(`/messages?page=${page}`)
+                   
+                    this.list_messages = [...response.data.data.reverse(), ...this.list_messages]
+                    this.currentPage = response.data.current_page
+                    this.lastPage = response.data.last_page
+
+                    this.newMessageArrived = response.data.data.length
+
+                    this.$nextTick(() => {
+                        if (page === 1) {
+                            this.scrollToBottom()
+                        }
                     })
-                    .catch(error => {
-                        console.log(error)
-                    })
+                } catch (error) {
+                    console.log(error)
+                } finally {
+                    this.isLoading = false
+                }
+                
             },
             scrollToBottom () {
                 const container = document.querySelector('.messages')
@@ -96,29 +127,27 @@
                     )
                 }
             },
-            sendMessage() {
-                axios.post('/messages', {
-                    message: this.message
-                })
-                .then(response => {
-                    this.list_messages.push({
-                        message: this.message,
-                        created_at: new Date().toJSON().replace(/T|Z/gi, ' '),
-                        user: this.$root.currentUserLogin
+            async sendMessage() {
+                try {
+                    const response = await axios.post('/messages', {
+                        message: this.message
                     })
+
+                    this.list_messages.push(response.data.message)
                     this.message = ''
                     this.scrollToBottom()
-                })
-                .catch(error => {
+                } catch (error) {
                     console.log(error)
-                })
+                }
             },
-            getUsersOnline() {
-                axios.get(`${process.env.MIX_LARAVEL_ECHO_SERVER_HOST}/apps/${this.$root.echoCredentials.appId}/channels/laravel_database_chatroom?auth_key=${this.$root.echoCredentials.key}`)
-                .then(response => {
+            async getUsersOnline() {
+                try {
+                   const response = await axios.get(`${process.env.MIX_LARAVEL_ECHO_SERVER_HOST}/apps/${this.$root.echoCredentials.appId}/channels/laravel_database_chatroom?auth_key=${this.$root.echoCredentials.key}`)
+           
                     this.usersOnline = response.data.subscription_count
-                })
-                .catch(e => console.log(e))
+                } catch (error) {
+                    console.log(error)
+                }
             }
         }
     } 

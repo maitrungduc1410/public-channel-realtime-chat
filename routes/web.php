@@ -24,13 +24,18 @@ Route::get('/getUserLogin', function() {
 })->middleware('auth');
 
 Route::get('/messages', function() {
-  $messages = App\Message::with('user')->orderBy('id', 'desc')->limit(300)->get()->reverse()->values();
+  $messages = App\Message::with('user')->latest()->paginate(50);
 	return $messages;
 })->middleware('auth');
 
 Route::post('/messages', function() {
-    $user = Auth::user();
-    $message = $user->messages()->create(['message' => request()->get('message')]);
-    broadcast(new App\Events\MessagePosted($message, $user))->toOthers();
-    return ['status' => 'OK'];
+  $user = Auth::user();
+
+  $message = new App\Message();
+  $message->message = request()->get('message', '');
+  $message->user_id = $user->id;
+  $message->save();
+  
+  broadcast(new App\Events\MessagePosted($message, $user))->toOthers();
+  return ['message' => $message->load('user')];
 })->middleware('auth');
