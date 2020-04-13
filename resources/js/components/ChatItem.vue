@@ -5,7 +5,7 @@
 			{{ message.user.name }}
 		</div>
 		<div class="message-item timestamp">
-			| {{ message.created_at.split(' ')[1] }}: 
+			| <span data-toggle="tooltip" data-placement="top" :title="message.created_at">{{ message.created_at.split(' ')[1] }}</span>: 
 		</div>
 		<div class="message-item text-message">
 			{{ message.message }}

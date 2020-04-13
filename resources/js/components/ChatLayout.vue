@@ -110,6 +110,10 @@
                         if (page === 1) {
                             this.scrollToBottom()
                         }
+
+                        $(function () {
+                            $('[data-toggle="tooltip"]').tooltip()
+                        })
                     })
                 } catch (error) {
                     console.log(error)
