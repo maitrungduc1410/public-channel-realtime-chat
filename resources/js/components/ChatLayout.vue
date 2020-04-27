@@ -90,7 +90,7 @@
                 if (scroll < 1 && this.currentPage < this.lastPage) {
                     await this.loadMessage(this.currentPage + 1)
                     const lastFirstMessage = $(`.message:nth-child(${this.newMessageArrived - 1})`)
-                    $('.messages').scrollTop(lastFirstMessage.offset().top)
+                    $('.messages').scrollTop(lastFirstMessage.position().top - 10)
                 }
             })
         },
