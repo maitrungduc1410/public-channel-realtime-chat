@@ -27,13 +27,15 @@ Vue.component('chat-layout', require('./components/ChatLayout.vue').default)
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+import laravelEchoServer from '../../laravel-echo-server.json'
+
 const app = new Vue({
     el: '#app',
     data: {
         currentUserLogin: {},
         echoCredentials: {
-            appId: "b18eec84e0bb4416", //  appId in laravel-echo-server.json
-			key: "4e315cabbe99483173f64e7fd8d8d05f" // key in laravel-echo-server.json
+            appId: laravelEchoServer.clients[0].appId, //  appId in laravel-echo-server.json
+			key: laravelEchoServer.clients[0].key // key in laravel-echo-server.json
         }
     },
     created () {
