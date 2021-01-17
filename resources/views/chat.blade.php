@@ -29,7 +29,9 @@
 	<div id="app">
 		<chat-layout></chat-layout>
 	</div>
-	<script src="http://localhost:4000/socket.io/socket.io.js"></script>
+	@if(!empty(env('LARAVEL_ECHO_CLIENT')))
+	<script src="{{ env('LARAVEL_ECHO_CLIENT') }}"></script>
+	@endif
 	<script src="{{ mix('js/manifest.js') }}"></script>
 	<script src="{{ mix('js/vendor.js') }}"></script>
 	<script src="{{ mix('js/app.js') }}"></script>

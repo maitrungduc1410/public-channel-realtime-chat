@@ -44,18 +44,23 @@ COPY .docker/supervisor.d/php-fpm.conf /etc/supervisor.d/php-fpm.conf
 # Start Laravel worker (no need if enable Horizon)
 COPY .docker/supervisor.d/worker.conf /etc/supervisor.d/worker.conf
 
-# RUN addgroup -g 1000 appgroup
-
-# RUN adduser -D -u 1000 appuser -G appgroup
-
+# ==== LOCAL
+# group "dialout" has ID = 20
 RUN adduser -D -u 501 appuser -G dialout
 
 RUN chown -R appuser:dialout /var/www/html
 
-# Copy existing application directory permissions
 COPY --chown=appuser:dialout . /var/www/html
 
-# Change current user to www
+# ==== PRODUCTION
+# RUN addgroup -g 1000 appgroup
+
+# RUN adduser -D -u 1000 appuser -G appgroup
+
+# RUN chown -R appuser:appgroup /var/www/html
+
+# COPY --chown=appuser:appgroup . /var/www/html
+
 USER appuser
 
 CMD supervisord -n -c /etc/supervisord.conf

@@ -24,6 +24,5 @@ laravel-echo-server.lock
 /public/css/app.css
 /public/mix-manifest.json
 
-laravel-echo-server.json
 logs/**/*[.log, .pid]
 !logs/.gitkeep
