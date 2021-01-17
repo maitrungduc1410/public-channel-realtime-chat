@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', function() {
+    return view('welcome');
+});
+
 Auth::routes();
 
 Route::get('/chat', function() {
@@ -24,7 +28,7 @@ Route::get('/getUserLogin', function() {
 })->middleware('auth');
 
 Route::get('/messages', function() {
-    return App\Models\Message::with('user')->get();
+    return App\Models\Message::with('user')->latest()->paginate(50);
 })->middleware('auth');
 
 Route::post('/messages', function() {

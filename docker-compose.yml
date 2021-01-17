@@ -1,74 +1,98 @@
-# For more information: https://laravel.com/docs/sail
-version: '3'
+version: '3.5'
+
 services:
-    laravel.test:
-        build:
-            context: ./vendor/laravel/sail/runtimes/8.0
-            dockerfile: Dockerfile
-            args:
-                WWWGROUP: '${WWWGROUP}'
-        image: sail-8.0/app
-        ports:
-            - '${APP_PORT:-80}:80'
-        environment:
-            WWWUSER: '${WWWUSER}'
-            LARAVEL_SAIL: 1
-        volumes:
-            - '.:/var/www/html'
-        networks:
-            - sail
-        depends_on:
-            - mysql
-            - redis
-            # - selenium
-    # selenium:
-    #     image: 'selenium/standalone-chrome'
-    #     volumes:
-    #         - '/dev/shm:/dev/shm'
-    #     networks:
-    #         - sail
-    #     depends_on:
-    #         - laravel.test
-    mysql:
-        image: 'mysql:8.0'
-        ports:
-            - '${FORWARD_DB_PORT:-3306}:3306'
-        environment:
-            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
-            MYSQL_DATABASE: '${DB_DATABASE}'
-            MYSQL_USER: '${DB_USERNAME}'
-            MYSQL_PASSWORD: '${DB_PASSWORD}'
-            MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
-        volumes:
-            - 'sailmysql:/var/lib/mysql'
-        networks:
-            - sail
-    redis:
-        image: 'redis:alpine'
-        ports:
-            - '${FORWARD_REDIS_PORT:-6379}:6379'
-        volumes:
-            - 'sailredis:/data'
-        networks:
-            - sail
-    # memcached:
-    #     image: 'memcached:alpine'
-    #     ports:
-    #         - '11211:11211'
-    #     networks:
-    #         - sail
-    mailhog:
-        image: 'mailhog/mailhog:latest'
-        ports:
-            - 1025:1025
-            - 8025:8025
-        networks:
-            - sail
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - app-network
+      - db-network
+      - redis-network
+    depends_on:
+      - db
+      - redis
+      - laravel_echo_server
+
+  webserver:
+    image: nginx:1.19-alpine
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT}:8080"
+    volumes:
+      - ./:/var/www/html:ro
+      - .docker/nginx/conf.d/:/etc/nginx/conf.d/:ro
+      - .docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - app-network
+      - echo-network
+    healthcheck:
+      test: wget --quiet --tries=1 --spider ${APP_URL} || exit 1z
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    user: nginx
+
+  db:
+    image: mysql:5.7.22
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: rootpass
+    volumes:
+      - .docker/data/db:/var/lib/mysql/
+      - .docker/mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - db-network
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    user: 1000:1000
+      
+  laravel_echo_server:
+    build:
+      context: .docker/laravel-echo-server/
+      dockerfile: Dockerfile
+    volumes:
+      - .env:/app/.env
+      - ./logs/laravel-echo:/app/logs
+    restart: unless-stopped
+    networks:
+      - echo-network
+      - redis-network
+    healthcheck:
+      test: wget --quiet --tries=1 --spider http://localhost:6001 || exit 1z
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  redis:
+    image: redis:5-alpine
+    volumes:
+      - .docker/data/redis:/data
+    restart: unless-stopped
+    networks:
+      - redis-network
+    healthcheck:
+      test: ["CMD", "redis-cli","ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    user: 1000:1000
+
 networks:
-    sail:
-        driver: bridge
-volumes:
-    sailmysql:
-        driver: local
-    sailredis:
-        driver: local
+  app-network:
+    driver: bridge
+  db-network:
+    driver: bridge
+  redis-network:
+    driver: bridge
+  echo-network:
+    driver: bridge

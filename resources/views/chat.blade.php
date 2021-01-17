@@ -23,13 +23,15 @@
 		  overflow: hidden;
 		}
 	</style>
-	<link rel="stylesheet" href="/css/app.css">
+	<link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
 	<div id="app">
 		<chat-layout></chat-layout>
 	</div>
-	<script src="http://localhost:6001/socket.io/socket.io.js"></script>
-	<script src="/js/app.js"></script>
+	<script src="http://localhost:4000/socket.io/socket.io.js"></script>
+	<script src="{{ mix('js/manifest.js') }}"></script>
+	<script src="{{ mix('js/vendor.js') }}"></script>
+	<script src="{{ mix('js/app.js') }}"></script>
 </body>
 </html>
