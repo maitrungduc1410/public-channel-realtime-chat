@@ -1,8 +1,0 @@
-{
-  "name": "laravel-echo-server",
-  "script": "laravel-echo-server",
-  "args": "start",
-  "output": "./logs/out.log",
-  "error": "./logs/error.log",
-  "time": true
-}

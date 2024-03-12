@@ -23,17 +23,16 @@
 		  overflow: hidden;
 		}
 	</style>
-	<link href="{{ asset('css/app.css') }}" rel="stylesheet">
+	@vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body>
 	<div id="app">
 		<chat-layout></chat-layout>
 	</div>
-	@if(!empty(env('LARAVEL_ECHO_CLIENT')))
-	<script src="{{ env('LARAVEL_ECHO_CLIENT') }}"></script>
+	@if (env('APP_IS_DOCKER') == 'true')
+		<script src="/socket.io/socket.io.js"></script>
+	@else
+		<script src="http://localhost:6001/socket.io/socket.io.js"></script>
 	@endif
-	<script src="{{ mix('js/manifest.js') }}"></script>
-	<script src="{{ mix('js/vendor.js') }}"></script>
-	<script src="{{ mix('js/app.js') }}"></script>
 </body>
 </html>

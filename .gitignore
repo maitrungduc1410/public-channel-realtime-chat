@@ -1,28 +1,30 @@
+/.phpunit.cache
 /node_modules
+/public/build
 /public/hot
 /public/storage
 /storage/*.key
 /vendor
 .env
 .env.backup
+.env.production
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
+auth.json
 npm-debug.log
 yarn-error.log
+/.fleet
+/.idea
+/.vscode
+
+logs/**/*[.log, .pid]
+!logs/.gitkeep
+*.log
+supervisord.pid
 laravel-echo-server.lock
 
 .docker/data/db/*
 !.docker/data/db/.gitkeep
 .docker/data/redis/*
 !.docker/data/redis/.gitkeep
-
-# ignore frontend built files
-/public/js/app.js
-/public/js/manifest.js
-/public/js/vendor.js
-/public/css/app.css
-/public/mix-manifest.json
-
-logs/**/*[.log, .pid]
-!logs/.gitkeep
