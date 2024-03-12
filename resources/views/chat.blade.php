@@ -29,6 +29,6 @@
 	<div id="app">
 		<chat-layout></chat-layout>
 	</div>
-	<script src="{{ request()->getScheme() }}://{{ request()->getHost() }}:{{ env('VITE_LARAVEL_ECHO_SERVER_PORT') }}/socket.io/socket.io.js"></script>
+	<script src="{{ env('APP_FORCE_HTTPS') == 'true' ? 'https' : 'http' }}://{{ request()->getHost() }}:{{ env('VITE_LARAVEL_ECHO_SERVER_PORT') }}/socket.io/socket.io.js"></script>
 </body>
 </html>
