@@ -120,7 +120,7 @@ async function sendMessage() {
 async function getUsersOnline() {
     try {
         const response = await axios.get(
-            `${window.location.protocol}//${window.location.hostname}:6001/apps/${appId}/channels/laravel_database_chatroom?auth_key=${key}`
+            `${window.location.protocol}//${window.location.hostname}:${import.meta.env.VITE_LARAVEL_ECHO_SERVER_PORT}/apps/${appId}/channels/laravel_database_chatroom?auth_key=${key}`
         );
         usersOnline.value = response.data.subscription_count;
     } catch (error) {
