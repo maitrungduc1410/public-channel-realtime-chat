@@ -79,6 +79,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - .env:/app/.env
+      - ./laravel-echo-server.json:/app/laravel-echo-server.json
       - ./logs/laravel-echo:/app/logs
     restart: always
     networks:
