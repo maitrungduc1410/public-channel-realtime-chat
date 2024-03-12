@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/chat', function() {
+Route::get('/', function() {
     return view('chat');
 })->middleware('auth');
 

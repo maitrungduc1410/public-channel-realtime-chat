@@ -6,7 +6,7 @@ import $ from "jquery";
 
 const message = ref("");
 const maxMessageLength = parseInt(
-    import.meta.env.VITE_CHAT_MAX_MESSAGE_LENGTH || "1000"
+    import.meta.env.VITE_CHAT_MAX_MESSAGE_LENGTH || "500"
 );
 
 const list_messages = ref([]);
